@@ -1,3 +1,4 @@
+// src/app/user/layout.tsx
 "use client";
 
 import { useUser, SignOutButton } from "@clerk/nextjs";
@@ -10,6 +11,7 @@ import {
   ClipboardIcon,
   ArrowRightOnRectangleIcon,
 } from "@heroicons/react/24/outline";
+import OrientationOverlay from "@/components/OrientationOverlay"; // Import the overlay component
 
 export default function UserLayout({
   children,
@@ -88,7 +90,12 @@ export default function UserLayout({
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 p-8">{children}</main>
+      <main className="flex-1 w-full overflow-x-auto">
+        <div className="max-w-7xl mx-auto p-4">{children}</div>
+      </main>
+
+      {/* Orientation Overlay */}
+      <OrientationOverlay />
     </div>
   );
 }

@@ -12,6 +12,7 @@ import {
   ShieldCheckIcon,
   ArrowRightOnRectangleIcon,
 } from "@heroicons/react/24/outline";
+import OrientationOverlay from "@/components/OrientationOverlay"; // Import the overlay component
 
 export default function AdminLayout({
   children,
@@ -96,6 +97,9 @@ export default function AdminLayout({
       <main className="flex-1 w-full overflow-x-auto">
         <div className="max-w-7xl mx-auto p-4">{children}</div>
       </main>
+
+      {/* Orientation Overlay */}
+      <OrientationOverlay />
     </div>
   );
 }
