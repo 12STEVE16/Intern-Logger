@@ -76,7 +76,6 @@ export default function LogPage() {
       if (!logId) return;
       setLoading(true);
 
-      // build token‑aware Supabase client
       const token = await getToken();
       const supabase = createSupabaseClient(token || "");
 
@@ -110,9 +109,29 @@ export default function LogPage() {
     if (!user?.id) return;
     setLoading(true);
 
-    // build token‑aware Supabase client
     const token = await getToken();
     const supabase = createSupabaseClient(token || "");
+
+    // Check if user is active
+    const { data: userData, error: userError } = await supabase
+      .from("users")
+      .select("active")
+      .eq("id", user.id)
+      .single();
+
+    if (userError || !userData) {
+      alert("Unable to verify account status. Please try again.");
+      setLoading(false);
+      return;
+    }
+
+    if (!userData.active) {
+      alert(
+        "Your account is not active. Please contact an administrator to activate your account."
+      );
+      setLoading(false);
+      return;
+    }
 
     try {
       if (logId) {

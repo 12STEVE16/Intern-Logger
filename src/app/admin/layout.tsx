@@ -1,5 +1,7 @@
+// src/app/admin/layout.tsx
 "use client";
 
+import React from "react";
 import { useUser, SignOutButton } from "@clerk/nextjs";
 import Link from "next/link";
 import Image from "next/image";
@@ -7,6 +9,7 @@ import { usePathname } from "next/navigation";
 import {
   HomeIcon,
   UsersIcon,
+  ShieldCheckIcon,
   ArrowRightOnRectangleIcon,
 } from "@heroicons/react/24/outline";
 
@@ -27,17 +30,20 @@ export default function AdminLayout({
   }
 
   const avatarUrl = user?.imageUrl || "/default-profile.png";
-
   const navItems = [
     { label: "Home", href: "/admin/dashboard", icon: HomeIcon },
     { label: "User Management", href: "/admin/users", icon: UsersIcon },
+    {
+      label: "Admin Management",
+      href: "/admin/admins",
+      icon: ShieldCheckIcon,
+    },
   ];
 
   return (
     <div className="min-h-screen flex bg-gray-50 text-gray-900">
       {/* Sidebar */}
       <aside className="w-64 bg-white border-r border-gray-200 p-6 flex flex-col">
-        {/* Profile */}
         <div className="flex flex-col items-center mb-8">
           <Image
             src={avatarUrl}
@@ -54,16 +60,15 @@ export default function AdminLayout({
           </span>
         </div>
 
-        {/* Navigation Links */}
         <nav className="flex-1 space-y-2">
           {navItems.map(({ label, href, icon: Icon }) => {
-            const active = pathname === href;
+            const isActive = pathname === href;
             return (
               <Link
                 key={href}
                 href={href}
-                className={`flex items-center px-4 py-2 rounded-lg transition ${
-                  active
+                className={`flex items-center px-4 py-2 rounded-lg transition-colors duration-200 ${
+                  isActive
                     ? "bg-blue-600 text-white"
                     : "text-gray-700 hover:bg-gray-100"
                 }`}
@@ -75,10 +80,9 @@ export default function AdminLayout({
             );
           })}
 
-          {/* Sign Out */}
           <SignOutButton>
             <button
-              className="flex w-full items-center px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100 transition"
+              className="flex w-full items-center px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors duration-200"
               aria-label="Sign Out"
             >
               <ArrowRightOnRectangleIcon className="h-5 w-5 mr-3" />
@@ -89,7 +93,7 @@ export default function AdminLayout({
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 px-8 pt-4 pb-4 overflow-y-auto">{children}</main>
+      <main className="flex-1 p-8 w-full">{children}</main>
     </div>
   );
 }

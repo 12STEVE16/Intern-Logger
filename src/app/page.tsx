@@ -14,7 +14,7 @@ export default function LandingPage() {
           feedback — all in one place.
         </p>
         <div className="flex flex-col sm:flex-row justify-center gap-4">
-          <Link href="http://localhost:3000" passHref>
+          <Link href="/" passHref>
             <Button size="lg">Get Started</Button>
           </Link>
         </div>
