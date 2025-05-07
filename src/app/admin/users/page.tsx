@@ -41,7 +41,7 @@ export default function AdminUsersPage() {
         return;
       }
 
-      const usersWithLogCount = await Promise.all(
+      const enriched = await Promise.all(
         data.map(async (user) => {
           const { count } = await supabase
             .from("work_logs")
@@ -51,7 +51,7 @@ export default function AdminUsersPage() {
         })
       );
 
-      setUsers(usersWithLogCount);
+      setUsers(enriched);
       setLoading(false);
     };
 
@@ -68,16 +68,15 @@ export default function AdminUsersPage() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
+    <div className="max-w-6xl w-full mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Users Dashboard</h1>
       </div>
 
-      <Card className="max-w-full">
+      <Card className="w-full overflow-hidden rounded-2xl shadow">
         <CardContent className="p-4">
-          {/* ensures container never cuts off */}
-          <div className="w-full overflow-x-auto">
-            <table className="table-auto w-full bg-white shadow rounded-lg text-sm">
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[800px] table-auto text-sm bg-white">
               <thead className="bg-gray-100 text-xs font-semibold text-gray-700">
                 <tr>
                   <th className="px-4 py-2 text-left">No</th>
@@ -114,12 +113,8 @@ export default function AdminUsersPage() {
                       onClick={() => router.push(`/admin/users/${u.id}/logs`)}
                     >
                       <td className="px-4 py-3">{i + 1}</td>
-                      <td className="px-4 py-3 font-medium max-w-[120px] truncate">
-                        {u.full_name}
-                      </td>
-                      <td className="px-4 py-3 max-w-[180px] truncate">
-                        {u.email}
-                      </td>
+                      <td className="px-4 py-3">{u.full_name}</td>
+                      <td className="px-4 py-3">{u.email}</td>
                       <td className="px-4 py-3">
                         <span
                           className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
@@ -133,7 +128,7 @@ export default function AdminUsersPage() {
                       </td>
                       <td className="px-4 py-3">{u.totalLogs}</td>
                       <td
-                        className="px-4 py-3 flex gap-2 flex-wrap"
+                        className="px-4 py-3 flex gap-2 flex-nowrap"
                         onClick={(e) => e.stopPropagation()}
                       >
                         <Button
